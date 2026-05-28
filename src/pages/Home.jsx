@@ -6,7 +6,6 @@ import ComedyFun from "../sections/ComedyFun";
 import CartoonUniverse from "../sections/CartoonUniverse";
 import GamesCyberpunk from "../sections/GamesCyberpunk";
 import FashionLuxury from "../sections/FashionLuxury";
-import ShapeMorphing from "../sections/ShapeMorphing";
 import { getVideos } from "../data/videos";
 import { shuffleArray, shuffleVideos } from "../utils/shuffle";
 
@@ -17,7 +16,6 @@ const HOME_SECTIONS = [
   { id: "cartoon", Component: CartoonUniverse },
   { id: "games", Component: GamesCyberpunk },
   { id: "fashion", Component: FashionLuxury },
-  { id: "shape", Component: ShapeMorphing },
 ];
 
 export default function Home() {

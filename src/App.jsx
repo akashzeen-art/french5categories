@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Categories from "./pages/Categories";
 import CategoryPage from "./pages/CategoryPage";
+import CartoonPage from "./pages/CartoonPage";
 import VideoPlayer from "./pages/VideoPlayer";
 import "./App.css";
 
@@ -44,7 +45,7 @@ export default function App() {
               <Route path="/categories" element={<Categories />} />
               <Route path="/cooking" element={<CategoryPage />} />
               <Route path="/comedy" element={<CategoryPage />} />
-              <Route path="/cartoon" element={<CategoryPage />} />
+              <Route path="/cartoon" element={<CartoonPage />} />
               <Route path="/games" element={<CategoryPage />} />
               <Route path="/fashion" element={<CategoryPage />} />
               <Route path="/video/:id" element={<VideoPlayer />} />

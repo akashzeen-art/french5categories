@@ -10,6 +10,7 @@ import { shuffleArray } from "../utils/shuffle";
 
 const themeConfigs = {
   cooking: {
+    thumbFit: "object-cover",
     name: "CUISINE",
     icon: ChefHat,
     desc: "Burgers, tagines, lasagnes, kebabs et currys — des recettes du monde entier préparées avec passion.",
@@ -26,6 +27,7 @@ const themeConfigs = {
     playBg: "bg-[#FF4500] text-white",
   },
   comedy: {
+    thumbFit: "object-cover",
     name: "COMÉDIE",
     icon: Laugh,
     desc: "Bureau des Plaintes, COVID, Emoji, Jean Michel Bruitage — les meilleurs sketches français qui font rire.",
@@ -42,6 +44,7 @@ const themeConfigs = {
     playBg: "bg-[#a3e635] text-[#0B0F19]",
   },
   cartoon: {
+    thumbFit: "object-cover",
     name: "CARTOON",
     icon: Clapperboard,
     desc: "Dragon Ball Z, Hey Arnold, Inspecteur Gadget, Pokémon — les dessins animés cultes de plusieurs générations.",
@@ -58,6 +61,7 @@ const themeConfigs = {
     playBg: "bg-indigo-500 text-white",
   },
   games: {
+    thumbFit: "object-contain",
     name: "JEUX",
     icon: Gamepad2,
     desc: "Tetris, 2048, Pinball, Water Sort — des dizaines de jeux addictifs à jouer dans le navigateur.",
@@ -74,6 +78,7 @@ const themeConfigs = {
     playBg: "bg-[#00f0ff] text-black",
   },
   fashion: {
+    thumbFit: "object-cover",
     name: "MODE",
     icon: Shirt,
     desc: "Maquillage, coiffure, soins de la peau et ongles — des tutoriels beauté pour se sublimer au quotidien.",
@@ -91,16 +96,37 @@ const themeConfigs = {
   }
 };
 
+const cartoonSeriesConfig = [
+  { key: "DRAGONBALLZ",    label: "Dragon Ball Z",     emoji: "🔥" },
+  { key: "HEYARNOLD",      label: "Hey Arnold",        emoji: "🏙️" },
+  { key: "INSPECTORGADGET",label: "Inspecteur Gadget", emoji: "🔧" },
+  { key: "POKEMON",        label: "Pokémon",           emoji: "⚡" },
+];
+
+function getCartoonSeries(videos) {
+  return cartoonSeriesConfig.map(({ key, label, emoji }) => ({
+    key, label, emoji,
+    videos: videos.filter((v) => v.id.startsWith("cartoon-") && (
+      key === "DRAGONBALLZ"     ? [1,2,3,4,5].includes(+v.id.split("-")[1]) :
+      key === "HEYARNOLD"       ? [6,7,8,9,10].includes(+v.id.split("-")[1]) :
+      key === "INSPECTORGADGET" ? [11,12,13,14,15].includes(+v.id.split("-")[1]) :
+                                  [16,17,18,19,20].includes(+v.id.split("-")[1])
+    ))
+  }));
+}
+
 export default function CategoryPage() {
   const location = useLocation();
-  const catId = location.pathname.split("/").pop(); // Extract e.g. "cooking" or "games"
+  const catId = location.pathname.split("/").pop();
   const theme = themeConfigs[catId] || themeConfigs.cooking;
   
   const [allVideos, setAllVideos] = useState([]);
   const [filteredVideos, setFilteredVideos] = useState([]);
 
   useEffect(() => {
-    const list = shuffleArray(getVideos().filter((v) => v.category === catId));
+    const list = catId === "cartoon"
+      ? getVideos().filter((v) => v.category === catId)
+      : shuffleArray(getVideos().filter((v) => v.category === catId));
     setAllVideos(list);
     setFilteredVideos(list);
   }, [catId]);
@@ -155,73 +181,93 @@ export default function CategoryPage() {
           </p>
         </div>
 
-        {/* Categories Video Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredVideos.map((vid) => (
-            <div
-              key={vid.id}
-              className="group"
-            >
-              <Link
-                to={`/video/${vid.id}`}
-                onClick={handleClickSound}
-                onMouseEnter={handleHoverSound}
-                className={`block rounded-2xl overflow-hidden shadow-lg ${theme.cardBg} border transition-all duration-500 cursor-pointer ${theme.cardHover}`}
-              >
-                
-                {/* Visual Thumbnail */}
-                <div className="aspect-[16/10] relative overflow-hidden bg-black">
-                  <img
-                    src={vid.thumbnail}
-                    alt={vid.title}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10" />
-
-                  {/* Dynamic Play overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl ${theme.playBg}`}>
-                      <Play className="w-5 h-5 fill-current ml-1" />
-                    </div>
-                  </div>
-
-                  {/* Video Duration */}
-                  <span className="absolute bottom-4 right-4 z-20 text-[9px] font-bold font-mono tracking-wide px-2 py-0.5 rounded bg-black/70 text-slate-300">
-                    {vid.duration}
+        {/* Cartoon: grouped by series */}
+        {catId === "cartoon" ? (
+          <div className="flex flex-col gap-16">
+            {getCartoonSeries(filteredVideos).map(({ key, label, emoji, videos: seriesVideos }) => (
+              <div key={key}>
+                {/* Series Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-2xl">{emoji}</span>
+                  <h2 className="font-display font-black text-xl md:text-2xl uppercase tracking-tight text-[#1E3A8A]">
+                    {label}
+                  </h2>
+                  <span className="ml-2 text-xs font-bold bg-indigo-600 text-white px-2.5 py-1 rounded-full">
+                    {seriesVideos.length} vidéos
                   </span>
                 </div>
 
-                {/* Details */}
-                <div className="p-6 flex flex-col gap-2.5">
-                  <div className="flex justify-between items-center text-[9px] text-slate-400 font-bold uppercase tracking-wider">
-                    <span className={theme.accentText}>{vid.creator}</span>
-                  </div>
-
-                  <h3 className={`font-display font-black text-sm uppercase line-clamp-1 group-hover:${theme.accentText} transition-colors ${theme.cardTitle}`}>
-                    {vid.title}
-                  </h3>
-
-                  <p className={`text-xs line-clamp-2 leading-relaxed ${theme.cardDesc}`}>
-                    {vid.description}
-                  </p>
-
-                  <div className="flex items-center gap-4 text-[9px] font-bold text-slate-400 border-t border-black/5 dark:border-white/5 pt-4 mt-2">
-                    <span className="flex items-center gap-1">
-                      <Eye className="w-3.5 h-3.5" />
-                      {vid.views}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500/10" />
-                      {vid.likes} J'aime
-                    </span>
-                  </div>
+                {/* Series Video Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {seriesVideos.map((vid) => (
+                    <div key={vid.id} className="group">
+                      <Link
+                        to={`/video/${vid.id}`}
+                        onClick={handleClickSound}
+                        onMouseEnter={handleHoverSound}
+                        className={`block rounded-2xl overflow-hidden shadow-lg ${theme.cardBg} border transition-all duration-500 cursor-pointer ${theme.cardHover}`}
+                      >
+                        <div className="aspect-[16/10] relative overflow-hidden bg-black">
+                          <img src={vid.thumbnail} alt={vid.title} className={`w-full h-full ${theme.thumbFit} transition-transform duration-700 ease-out group-hover:scale-108`} loading="lazy" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10" />
+                          <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl ${theme.playBg}`}>
+                              <Play className="w-5 h-5 fill-current ml-1" />
+                            </div>
+                          </div>
+                          <span className="absolute bottom-4 right-4 z-20 text-[9px] font-bold font-mono tracking-wide px-2 py-0.5 rounded bg-black/70 text-slate-300">{vid.duration}</span>
+                        </div>
+                        <div className="p-6 flex flex-col gap-2.5">
+                          <span className={`text-[9px] font-bold uppercase tracking-wider ${theme.accentText}`}>{vid.creator}</span>
+                          <h3 className={`font-display font-black text-sm uppercase line-clamp-1 transition-colors ${theme.cardTitle}`}>{vid.title}</h3>
+                          <p className={`text-xs line-clamp-2 leading-relaxed ${theme.cardDesc}`}>{vid.description}</p>
+                          <div className="flex items-center gap-4 text-[9px] font-bold text-slate-400 border-t border-black/5 pt-4 mt-2">
+                            <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" />{vid.views}</span>
+                            <span className="flex items-center gap-1"><Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500/10" />{vid.likes} J'aime</span>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
                 </div>
-
-              </Link>
-            </div>
-          ))}
-        </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* All other categories: flat grid */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredVideos.map((vid) => (
+              <div key={vid.id} className="group">
+                <Link
+                  to={`/video/${vid.id}`}
+                  onClick={handleClickSound}
+                  onMouseEnter={handleHoverSound}
+                  className={`block rounded-2xl overflow-hidden shadow-lg ${theme.cardBg} border transition-all duration-500 cursor-pointer ${theme.cardHover}`}
+                >
+                  <div className="aspect-[16/10] relative overflow-hidden bg-black">
+                    <img src={vid.thumbnail} alt={vid.title} className={`w-full h-full ${theme.thumbFit} transition-transform duration-700 ease-out group-hover:scale-108`} loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10" />
+                    <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl ${theme.playBg}`}>
+                        <Play className="w-5 h-5 fill-current ml-1" />
+                      </div>
+                    </div>
+                    <span className="absolute bottom-4 right-4 z-20 text-[9px] font-bold font-mono tracking-wide px-2 py-0.5 rounded bg-black/70 text-slate-300">{vid.duration}</span>
+                  </div>
+                  <div className="p-6 flex flex-col gap-2.5">
+                    <span className={`text-[9px] font-bold uppercase tracking-wider ${theme.accentText}`}>{vid.creator}</span>
+                    <h3 className={`font-display font-black text-sm uppercase line-clamp-1 transition-colors ${theme.cardTitle}`}>{vid.title}</h3>
+                    <p className={`text-xs line-clamp-2 leading-relaxed ${theme.cardDesc}`}>{vid.description}</p>
+                    <div className="flex items-center gap-4 text-[9px] font-bold text-slate-400 border-t border-black/5 dark:border-white/5 pt-4 mt-2">
+                      <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" />{vid.views}</span>
+                      <span className="flex items-center gap-1"><Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500/10" />{vid.likes} J'aime</span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
 
       </div>
     </div>
