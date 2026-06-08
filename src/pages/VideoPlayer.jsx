@@ -14,6 +14,8 @@ export default function VideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [likesCount, setLikesCount] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
 
@@ -58,15 +60,25 @@ export default function VideoPlayer() {
     }
   };
 
+  const formatTime = (secs) => {
+    if (!secs || isNaN(secs)) return '0:00';
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
   // Time progress bar tracking
   const handleTimeUpdate = () => {
     if (videoRef.current) {
-      const current = videoRef.current.currentTime;
-      const duration = videoRef.current.duration;
-      if (duration) {
-        setProgress((current / duration) * 100);
-      }
+      const cur = videoRef.current.currentTime;
+      const dur = videoRef.current.duration;
+      setCurrentTime(cur);
+      if (dur) setProgress((cur / dur) * 100);
     }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) setDuration(videoRef.current.duration);
   };
 
   // Fullscreen trigger
@@ -127,6 +139,7 @@ export default function VideoPlayer() {
               src={video.videoUrl}
               autoPlay
               onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
               onClick={togglePlay}
               className="w-full h-full object-cover cursor-pointer"
             />
@@ -161,7 +174,9 @@ export default function VideoPlayer() {
                   <button onClick={toggleMute} className="hover:text-fuchsia-400 transition-colors cursor-pointer">
                     {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4" />}
                   </button>
-                  <span className="text-[10px] font-mono text-slate-300">LECTURE EN COURS</span>
+                  <span className="text-[10px] font-mono text-slate-300">
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-4">
