@@ -489,11 +489,6 @@ const categoryData = {
       "Routine soins corps",
       "Smokey Eyes Makeup",
       "DIY Shampooing Anti-Frisottis",
-      "Teint unifie",
-      "Test Bigoudis Magique",
-      "French Manucure",
-      "Tuto maquillage debutant",
-      "Bronzage parfait"
     ],
     descriptions: [
       "10 idees de coiffures plaquees sur un carre mi-long lisse pour un look elegant.",
@@ -538,6 +533,9 @@ const categoryData = {
       "Tutoriel smokey eyes pour debutantes, facile et rapide.",
       "DIY shampoing solide anti-frisottis qui favorise la pousse des cheveux.",
       "Technique pour unifier son teint et cacher ses imperfections.",
+      "Test des bigoudis magiques pour des boucles sans chaleur.",
+      "4 techniques pour realiser une french manucure simple et nette.",
+      "Tutoriel maquillage pour debutantes avec le look NAKED.",
       "Test des bigoudis magiques pour des boucles sans chaleur.",
       "4 techniques pour realiser une french manucure simple et nette.",
       "Tutoriel maquillage pour debutantes avec le look NAKED.",
