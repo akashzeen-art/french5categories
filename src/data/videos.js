@@ -493,8 +493,7 @@ const categoryData = {
       "Test Bigoudis Magique",
       "French Manucure",
       "Tuto maquillage debutant",
-      "Bronzage parfait",
-      "Vernis semi permanent"
+      "Bronzage parfait"
     ],
     descriptions: [
       "10 idees de coiffures plaquees sur un carre mi-long lisse pour un look elegant.",
@@ -542,8 +541,7 @@ const categoryData = {
       "Test des bigoudis magiques pour des boucles sans chaleur.",
       "4 techniques pour realiser une french manucure simple et nette.",
       "Tutoriel maquillage pour debutantes avec le look NAKED.",
-      "Obtenir un bronzage parfait, naturel et lumineux facilement.",
-      "Comment appliquer et enlever le vernis semi-permanent correctement."
+      "Obtenir un bronzage parfait, naturel et lumineux facilement."
     ],
     thumbnails: [
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-24/i1.jpg",
@@ -587,12 +585,6 @@ const categoryData = {
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i18.jpg",
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i19.jpg",
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i20.jpg",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i21.jpg",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i22.jpg",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i23.jpg",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i24.jpg",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i25.jpg",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/i26.jpg"
     ],
     videoUrls: [
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-24/v1.mp4",
@@ -636,12 +628,6 @@ const categoryData = {
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v18.mp4",
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v19.mp4",
       "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v20.mp4",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v21.mp4",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v22.mp4",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v23.mp4",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v24.mp4",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v25.mp4",
-      "https://api.ameora.fun/content/GalaxiWebsite/FASHION-26/v26.mp4"
     ]
   }
 };
